@@ -8,7 +8,6 @@ const { signOut } = require("../../firebase/firebase.utils");
 const Header = ({ currentUser }) => {
   return (
     <div className="header">
-      {console.log(currentUser)}
       <Link className="logo-container" to="/">
         <Logo className="logo" />
       </Link>
