@@ -45,10 +45,19 @@ class App extends React.Component {
     );
   }
 }
+
+//#extracts reducer state properties from the root state and returns a new object
+//of required props from different reducer states!!
 const mapStateToProps = ({ user }) => ({
   currentUser: user.currentUser,
 });
+// It lets you provide action dispatching functions as props as a new Object which fullfills all your actions function demand
+//#extracts actions functions as props and returns a new object of action functions
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 });
+//we have to use connect to connect our component to main root state
+//this takes two function where the 2nd one is optional and return a function
+//we give the component as input to that function we want to connect to!
+//# the two functions adds their functionality to connnected Component this.props
 export default connect(mapStateToProps, mapDispatchToProps)(App);
