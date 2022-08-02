@@ -29,7 +29,7 @@ const CheckOutPage = ({ cartItems, total }) => {
       {cartItems.map((cartItem) => (
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
-      <div className="total">Total:{total}</div>
+      <div className="total">Total:{total}$</div>
       <StripeCheckoutButton price={total} />
       <div className="test-warning">
         The payment process is just a demo.To try it follow below credentials;
