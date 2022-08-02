@@ -28,7 +28,9 @@ const Header = ({ currentUser, hidden }) => {
             Sign Out
           </div>
         ) : (
-          <Link to="/signin">Sign In</Link>
+          <Link to="/signin" style={{ color: "black" }}>
+            Sign In
+          </Link>
         )}
         <CartIcon />
       </div>
