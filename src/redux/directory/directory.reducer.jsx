@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  sections : [
+  sections: [
     {
       title: "hats",
       imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
@@ -27,17 +27,17 @@ const INITIAL_STATE = {
     },
     {
       title: "mens",
-      imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
+      imageUrl: "https://www.apetogentleman.com/wp-content/uploads/2021/09/mens-fashion-trends-2022c.jpg",
       size: "large",
       id: 5,
       linkUrl: "shop/mens",
     },
-  ]
+  ],
 };
 const directoryReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    default : 
-      return state
+    default:
+      return state;
   }
-}
+};
 export default directoryReducer;

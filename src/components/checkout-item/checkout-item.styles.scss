@@ -2,10 +2,11 @@
   width: 100%;
   display: flex;
   min-height: 100px;
-  border-bottom: 1px solid darkgrey;
+  border-bottom: 1px solid rgb(56, 19, 142);
   padding: 15px 0;
   font-size: 20px;
   align-items: center;
+  background-color: #80ffff;
 
   .image-container {
     width: 23%;
@@ -24,10 +25,10 @@
 
   .quantity {
     display: flex;
-    .arrow{
-      cursor:pointer;
+    .arrow {
+      cursor: pointer;
     }
-    .value{
+    .value {
       margin: 0 10px;
     }
   }
@@ -37,4 +38,3 @@
     cursor: pointer;
   }
 }
-
