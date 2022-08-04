@@ -12,6 +12,7 @@ import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selector";
 const { auth, userProf } = require("./firebase/firebase.utils.js");
 const { onSnapshot } = require("firebase/firestore");
+
 class App extends React.Component {
   unsubscribeFromAuth = null;
   componentDidMount() {

@@ -7,7 +7,7 @@ const {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } = require("firebase/auth");
-const { getFirestore, doc, getDoc, setDoc } = require("firebase/firestore");
+const { getFirestore, doc, getDoc, setDoc, collection, writeBatch } = require("firebase/firestore");
 const firebaseConfig = {
   apiKey: "AIzaSyAtqUTsNmBsSKWtTPS3jMJF2ayL5ywS9kw",
   authDomain: "crown-db-65cb1.firebaseapp.com",
@@ -81,9 +81,36 @@ const SignInManually = async (email, password, comp) => {
     console.log("sign in manual:", err.message);
   }
 };
+const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = collection(firestore, collectionKey);
+  const batch = writeBatch(firestore);
+  objectsToAdd.forEach((obj) => {
+    const collectionDocRef = doc(collectionRef, obj.title);
+    batch.set(collectionDocRef, obj);
+  });
+  await batch.commit();
+};
+const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
+  const transformedCollections = collectionsSnapshot.docs.map((doc) => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+  return transformedCollections.reduce((accum, collection) => {
+    accum[collection.title.toLowerCase()] = collection;
+    return accum;
+  }, {});
+};
+module.exports.addCollectionAndDocuments = addCollectionAndDocuments;
 module.exports.signInWithGoogle = Aunthenticator;
 module.exports.auth = auth;
 module.exports.signOut = Disconnect;
 module.exports.userProf = createUserProfileDocument;
 module.exports.userProfM = createManually;
 module.exports.userSignM = SignInManually;
+module.exports.firestore = firestore;
+module.exports.remakeShopData = convertCollectionsSnapshotToMap;
