@@ -1,10 +1,10 @@
 import { legacy_createStore as createStore, applyMiddleware } from "redux";
 import { logger } from "redux-logger";
-import {persistStore} from "redux-persist"
+import { persistStore } from "redux-persist";
+import thunk from "redux-thunk";
 import rootReducer from "./root-reducer";
-const middlewares = [logger];
+const middlewares = [logger, thunk];
 //this stores get passed into our provider component in index.js to give access to the
 //root main state that we have prepared
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
-export const persistor=persistStore(store)
-
+export const persistor = persistStore(store);

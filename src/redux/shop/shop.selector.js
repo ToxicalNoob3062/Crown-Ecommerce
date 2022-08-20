@@ -12,3 +12,5 @@ export const selectCollection = (collectionUrlParams) => {
     return collections[collectionUrlParams];
   });
 };
+
+export const selectIsSelectionsLoaded = createSelector([selectShop], (shop) => !!shop.collections);
