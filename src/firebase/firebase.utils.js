@@ -1,7 +1,6 @@
 const { initializeApp } = require("firebase/app");
 const {
   getAuth,
-  signInWithPopup,
   GoogleAuthProvider,
   signOut,
   createUserWithEmailAndPassword,
@@ -21,15 +20,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-async function Aunthenticator() {
-  try {
-    await signInWithPopup(auth, provider);
-  } catch (err) {
-    console.log("my authentication error", err.message);
-  }
-}
+googleProvider.setCustomParameters({ prompt: "select_account" });
+
 async function Disconnect() {
   try {
     await signOut(auth);
@@ -105,8 +99,9 @@ const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
     return accum;
   }, {});
 };
+
+module.exports.googleProvider = googleProvider;
 module.exports.addCollectionAndDocuments = addCollectionAndDocuments;
-module.exports.signInWithGoogle = Aunthenticator;
 module.exports.auth = auth;
 module.exports.signOut = Disconnect;
 module.exports.userProf = createUserProfileDocument;

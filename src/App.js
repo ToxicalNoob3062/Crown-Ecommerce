@@ -10,30 +10,8 @@ import React from "react";
 import { setCurrentUser } from "./redux/user/user.action";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selector";
-const { auth, userProf } = require("./firebase/firebase.utils.js");
-const { onSnapshot } = require("firebase/firestore");
 
 class App extends React.Component {
-  unsubscribeFromAuth = null;
-  componentDidMount() {
-    const { setCurrentUser } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (authUser) => {
-      if (authUser) {
-        const userRef = await userProf(authUser);
-        onSnapshot(userRef, (snapShot) => {
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data(),
-          });
-        });
-      } else {
-        setCurrentUser(authUser);
-      }
-    });
-  }
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
   render() {
     return (
       <div>
