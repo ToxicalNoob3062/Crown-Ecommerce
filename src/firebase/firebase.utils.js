@@ -1,5 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const { getAuth, GoogleAuthProvider, signOut, createUserWithEmailAndPassword } = require("firebase/auth");
+const { getAuth, GoogleAuthProvider } = require("firebase/auth");
 const { getFirestore, doc, getDoc, setDoc, collection, writeBatch } = require("firebase/firestore");
 const firebaseConfig = {
   apiKey: "AIzaSyAtqUTsNmBsSKWtTPS3jMJF2ayL5ywS9kw",
@@ -17,15 +17,6 @@ const firestore = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
 googleProvider.setCustomParameters({ prompt: "select_account" });
-
-async function Disconnect() {
-  try {
-    await signOut(auth);
-    console.log("successfully signed out");
-  } catch (err) {
-    console.log("sngout");
-  }
-}
 
 const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -47,20 +38,6 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
   }
   return userRef;
 };
-const createManually = async (email, password, displayName, component) => {
-  try {
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    await createUserProfileDocument(user, { displayName });
-    component.setState({
-      displayName: "",
-      password: "",
-      confirmPassword: "",
-      email: "",
-    });
-  } catch (err) {
-    console.log("manual prof", err.message);
-  }
-};
 
 const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
   const collectionRef = collection(firestore, collectionKey);
@@ -71,6 +48,7 @@ const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
   });
   await batch.commit();
 };
+
 const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
   const transformedCollections = collectionsSnapshot.docs.map((doc) => {
     const { title, items } = doc.data();
@@ -87,11 +65,19 @@ const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
   }, {});
 };
 
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      resolve(userAuth);
+    }, reject);
+  });
+};
+
+module.exports.getCurrentUser = getCurrentUser;
 module.exports.googleProvider = googleProvider;
 module.exports.addCollectionAndDocuments = addCollectionAndDocuments;
 module.exports.auth = auth;
-module.exports.signOut = Disconnect;
 module.exports.userProf = createUserProfileDocument;
-module.exports.userProfM = createManually;
 module.exports.firestore = firestore;
 module.exports.remakeShopData = convertCollectionsSnapshotToMap;

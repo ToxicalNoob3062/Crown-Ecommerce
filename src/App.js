@@ -9,23 +9,33 @@ import CheckOutPage from "./pages/checkout/checkout.component";
 import React from "react";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "./redux/user/user.selector";
+import { checkUserSession } from "./redux/user/user.action";
 
-function App({ currentUser }) {
-  return (
-    <div>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/shop" component={ShopPage} />
-        <Route exact path="/signin" render={() => (currentUser ? <Redirect to="/" /> : <SignPage />)} />
-        <Route exact path="/checkout" component={CheckOutPage} />
-      </Switch>
-    </div>
-  );
+class App extends React.Component {
+  componentDidMount() {
+    const { checkUserSession } = this.props;
+    checkUserSession();
+  }
+  render() {
+    const { currentUser } = this.props;
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/shop" component={ShopPage} />
+          <Route exact path="/signin" render={() => (currentUser ? <Redirect to="/" /> : <SignPage />)} />
+          <Route exact path="/checkout" component={CheckOutPage} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
 });
-
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  checkUserSession: () => dispatch(checkUserSession()),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(App);
