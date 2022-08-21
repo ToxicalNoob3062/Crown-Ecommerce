@@ -1,11 +1,5 @@
 const { initializeApp } = require("firebase/app");
-const {
-  getAuth,
-  GoogleAuthProvider,
-  signOut,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} = require("firebase/auth");
+const { getAuth, GoogleAuthProvider, signOut, createUserWithEmailAndPassword } = require("firebase/auth");
 const { getFirestore, doc, getDoc, setDoc, collection, writeBatch } = require("firebase/firestore");
 const firebaseConfig = {
   apiKey: "AIzaSyAtqUTsNmBsSKWtTPS3jMJF2ayL5ywS9kw",
@@ -67,14 +61,7 @@ const createManually = async (email, password, displayName, component) => {
     console.log("manual prof", err.message);
   }
 };
-const SignInManually = async (email, password, comp) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    comp.setState({ email: "", password: "" });
-  } catch (err) {
-    console.log("sign in manual:", err.message);
-  }
-};
+
 const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
   const collectionRef = collection(firestore, collectionKey);
   const batch = writeBatch(firestore);
@@ -106,6 +93,5 @@ module.exports.auth = auth;
 module.exports.signOut = Disconnect;
 module.exports.userProf = createUserProfileDocument;
 module.exports.userProfM = createManually;
-module.exports.userSignM = SignInManually;
 module.exports.firestore = firestore;
 module.exports.remakeShopData = convertCollectionsSnapshotToMap;
