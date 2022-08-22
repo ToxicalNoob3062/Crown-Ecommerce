@@ -2,6 +2,8 @@ body {
   font-family: "Open Sans Condensed";
   padding: 20px 60px;
   background-image: url(/src/assets/sun-tornado.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
   font-weight: 800;
 }
 a {
